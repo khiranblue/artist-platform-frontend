@@ -1,0 +1,48 @@
+.card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  break-inside: avoid;
+  margin-bottom: var(--space-3);
+}
+
+.frame {
+  position: relative;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+  transition: border-color 0.2s ease;
+}
+
+/* The signature interaction: a thin brass/patina line appears on hover,
+   like a gallery placard frame lighting up — not a generic scale/shadow. */
+.card:hover .frame {
+  border-color: var(--accent);
+}
+
+.placeholder {
+  aspect-ratio: 4 / 5;
+  background: var(--surface);
+}
+
+.caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: var(--space-1);
+  gap: var(--space-2);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.artist {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}

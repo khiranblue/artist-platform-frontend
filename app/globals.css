@@ -1,0 +1,59 @@
+:root {
+  /* Color — a warm near-black instead of pure black, so colorful artwork
+     doesn't fight the background. Accent is a muted patina green (aged
+     bronze), deliberately not the terracotta or acid-green defaults. */
+  --bg: #141312;
+  --surface: #1c1a18;
+  --surface-hover: #242220;
+  --text-primary: #f2ede4;
+  --text-muted: #9a948a;
+  --accent: #6f8f7d;
+  --accent-dim: #4d6459;
+  --border: #2c2924;
+  --danger: #c4675a;
+
+  /* Type scale */
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-mono), 'SFMono-Regular', monospace;
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+
+  --radius: 3px; /* deliberately sharp, not the rounded-everything default */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+
+a {
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

@@ -1,0 +1,56 @@
+.page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--space-4);
+}
+
+.hero {
+  max-width: 640px;
+  margin-bottom: var(--space-5);
+}
+
+.heroTitle {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 1.1;
+  margin: 0 0 var(--space-2);
+}
+
+.heroSub {
+  font-family: var(--font-body);
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.grid {
+  columns: 1;
+  column-gap: var(--space-3);
+}
+
+@media (min-width: 640px) {
+  .grid {
+    columns: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    columns: 3;
+  }
+}
+
+@media (min-width: 1400px) {
+  .grid {
+    columns: 4;
+  }
+}
+
+.empty {
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
