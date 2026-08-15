@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { apiFetch, ApiError } from '@/lib/api';
 import styles from './page.module.css';
@@ -58,7 +59,9 @@ export default async function ArtworkPage({ params }: { params: { id: string } }
       </div>
       <div className={styles.info}>
         <h1 className={styles.title}>{artwork.title}</h1>
-        <p className={styles.artist}>{artwork.artist.username}</p>
+        <Link href={`/artists/${artwork.artist.username}`} className={styles.artist}>
+          {artwork.artist.username}
+        </Link>
         {artwork.description && <p className={styles.description}>{artwork.description}</p>}
       </div>
     </article>
