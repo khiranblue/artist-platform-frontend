@@ -20,7 +20,7 @@ export default function SuppliesPage() {
 
   const [stage, setStage] = useState<Stage>('idle');
   const [error, setError] = useState<string | null>(null);
-  const [reservationId, setReservationId] = useState<string | null>(null);
+  const [reservationId, setReservationId] = useState<string | null>(null); 
   const [categoryId, setCategoryId] = useState('');
   const [description, setDescription] = useState('');
 
