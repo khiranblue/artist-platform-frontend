@@ -1,9 +1,13 @@
 .card {
   display: block;
-  text-decoration: none;
-  color: inherit;
   break-inside: avoid;
   margin-bottom: var(--space-3);
+}
+
+.imageLink {
+  display: block;
+  text-decoration: none;
+  color: inherit;
 }
 
 .frame {
@@ -16,8 +20,8 @@
 }
 
 /* The signature interaction: a thin brass/patina line appears on hover,
-   like a gallery placard frame lighting up — not a generic scale/shadow. */
-.card:hover .frame {
+like a gallery placard frame lighting up — not a generic scale/shadow. */
+.imageLink:hover .frame {
   border-color: var(--accent);
 }
 
@@ -38,6 +42,11 @@
   font-family: var(--font-display);
   font-size: 0.95rem;
   color: var(--text-primary);
+  text-decoration: none;
+}
+
+.title:hover {
+  text-decoration: underline;
 }
 
 .artist {
@@ -45,4 +54,9 @@
   font-size: 0.7rem;
   color: var(--text-muted);
   white-space: nowrap;
+  text-decoration: none;
+}
+
+.artist:hover {
+  color: var(--text-primary);
 }
