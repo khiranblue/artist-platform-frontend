@@ -13,28 +13,31 @@ export interface ArtworkSummary {
 
 export function ArtworkCard({ artwork }: { artwork: ArtworkSummary }) {
   return (
-    <Link href={`/artworks/${artwork.artwork_id}`} className={styles.card}>
-      <div className={styles.frame}>
-        {artwork.preview_url && artwork.preview_width && artwork.preview_height ? (
-          <Image
-            src={artwork.preview_url}
-            alt={artwork.title}
-            width={artwork.preview_width}
-            height={artwork.preview_height}
-            // Explicit width/height above is what reserves the exact box
-            // server-side before a single byte of image data arrives —
-            // this is the actual CLS fix, not a CSS approximation.
-            style={{ width: '100%', height: 'auto' }}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          />
-        ) : (
-          <div className={styles.placeholder} aria-hidden="true" />
-        )}
-      </div>
+    <div className={styles.card}>
+      <Link href={`/artworks/${artwork.artwork_id}`} className={styles.imageLink}>
+        <div className={styles.frame}>
+          {artwork.preview_url && artwork.preview_width && artwork.preview_height ? (
+            <Image
+              src={artwork.preview_url}
+              alt={artwork.title}
+              width={artwork.preview_width}
+              height={artwork.preview_height}
+              style={{ width: '100%', height: 'auto' }}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            />
+          ) : (
+            <div className={styles.placeholder} aria-hidden="true" />
+          )}
+        </div>
+      </Link>
       <div className={styles.caption}>
-        <span className={styles.title}>{artwork.title}</span>
-        <span className={styles.artist}>{artwork.artist.username}</span>
+        <Link href={`/artworks/${artwork.artwork_id}`} className={styles.title}>
+          {artwork.title}
+        </Link>
+        <Link href={`/artists/${artwork.artist.username}`} className={styles.artist}>
+          {artwork.artist.username}
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 }
