@@ -50,7 +50,3 @@ export default function SuppliesPage() {
       {posts && posts.length === 0 && (
         <p className={styles.empty}>No posts yet — be the first to share.</p>
       )}
-      {posts && posts.length > 0 && <SupplyFeed posts={posts} />}
-    </div>
-  );
-}
