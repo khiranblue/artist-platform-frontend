@@ -48,5 +48,9 @@ export default function SuppliesPage() {
       {feedError && <p className={styles.error}>{feedError}</p>}
       {!feedError && posts === null && <p className={styles.empty}>Loading…</p>}
       {posts && posts.length === 0 && (
+      {posts && posts.length > 0 && <SupplyFeed posts={posts} />}
+    </div>
+  );
+}
         <p className={styles.empty}>No posts yet — be the first to share.</p>
       )}
