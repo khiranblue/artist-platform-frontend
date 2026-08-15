@@ -4,7 +4,13 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './DeleteArtworkButton.module.css';
 
-export function DeleteArtworkButton({ artworkId }: { artworkId: string }) {
+export function DeleteArtworkButton({
+  artworkId,
+  onDeleted,
+}: {
+  artworkId: string;
+  onDeleted?: () => void;
+}) {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -19,8 +25,12 @@ export function DeleteArtworkButton({ artworkId }: { artworkId: string }) {
       if (!res.ok) {
         throw new Error('delete_failed');
       }
-      router.push('/');
-      router.refresh();
+      if (onDeleted) {
+        onDeleted();
+      } else {
+        router.push('/');
+        router.refresh();
+      }
     } catch {
       setError('Something went wrong. Please try again.');
       setDeleting(false);
