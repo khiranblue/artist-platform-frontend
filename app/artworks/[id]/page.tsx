@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { apiFetch, ApiError } from '@/lib/api';
+import { getCurrentUser } from '@/lib/currentUser';
+import { DeleteArtworkButton } from '@/components/DeleteArtworkButton';
 import styles from './page.module.css';
 
 interface ArtworkDetail {
@@ -43,6 +45,12 @@ export default async function ArtworkPage({ params }: { params: { id: string } }
   const artwork = await getArtwork(params.id);
   if (!artwork) notFound();
 
+  // Ownership determined client-independent, server-side: compares the
+  // logged-in visitor's own username (from their session cookie) against
+  // the artwork's artist username. No new backend field needed.
+  const currentUser = await getCurrentUser();
+  const isOwner = currentUser?.username === artwork.artist.username;
+
   return (
     <article className={styles.page}>
       <div className={styles.imageColumn}>
@@ -58,7 +66,10 @@ export default async function ArtworkPage({ params }: { params: { id: string } }
         )}
       </div>
       <div className={styles.info}>
-        <h1 className={styles.title}>{artwork.title}</h1>
+        <div className={styles.infoHeader}>
+          <h1 className={styles.title}>{artwork.title}</h1>
+          {isOwner && <DeleteArtworkButton artworkId={artwork.artwork_id} />}
+        </div>
         <Link href={`/artists/${artwork.artist.username}`} className={styles.artist}>
           {artwork.artist.username}
         </Link>
