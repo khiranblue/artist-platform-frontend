@@ -224,3 +224,25 @@ export default function SuppliesPage() {
         <div className={styles.grid}>
           {posts.map((post) => (
             <div key={post.id} className={styles.postCard}>
+              <div className={styles.postFrame}>
+                {post.thumbnail_url ? (
+                  <Image
+                    src={post.thumbnail_url}
+                    alt={post.description}
+                    width={300}
+                    height={300}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                ) : (
+                  <div className={styles.placeholder} aria-hidden="true" />
+                )}
+              </div>
+              <p className={styles.postDescription}>{post.description}</p>
+              <span className={styles.postArtist}>{post.artist.username}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
