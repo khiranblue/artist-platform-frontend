@@ -1,0 +1,24 @@
+.heading {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.75rem;
+  margin: 0 0 var(--space-3);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-3);
+}
+
+.empty {
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.error {
+  font-family: var(--font-mono);
+  color: var(--danger);
+  font-size: 0.85rem;
+}
