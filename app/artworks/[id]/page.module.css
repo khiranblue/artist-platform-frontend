@@ -28,12 +28,18 @@
 }
 
 .artist {
+  display: block;
   font-family: var(--font-mono);
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--accent);
+  text-decoration: none;
   margin: 0 0 var(--space-3);
+}
+
+.artist:hover {
+  text-decoration: underline;
 }
 
 .description {
