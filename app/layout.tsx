@@ -1,7 +1,6 @@
 import { Fraunces, Inter, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
-import styles from './layout.module.css';
-import Link from 'next/link';
+import { SiteHeader } from '@/components/SiteHeader';
 import { getCurrentUser } from '@/lib/currentUser';
 
 const fraunces = Fraunces({
@@ -30,18 +29,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={`${fraunces.variable} ${inter.variable} ${plexMono.variable}`}>
       <body>
-        <header className={styles.header}>
-          <Link href="/" className={styles.wordmark}>
-            Atelier
-          </Link>
-          <nav className={styles.nav}>
-            {user ? (
-              <Link href="/dashboard">{user.username}</Link>
-            ) : (
-              <Link href="/login">Sign in</Link>
-            )}
-          </nav>
-        </header>
+        <SiteHeader user={user} />
         <main>{children}</main>
       </body>
     </html>
