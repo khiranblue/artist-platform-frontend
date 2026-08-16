@@ -34,9 +34,12 @@ async function getArtwork(id: string): Promise<ArtworkDetail | null> {
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const artwork = await getArtwork(params.id);
-  if (!artwork) return {};
+  // Explicit fallback title for a missing/deleted artwork — the root
+  // layout template still appends " — Atelier". No manual suffix here
+  // anymore: the template owns it, so a hardcoded one would double it.
+  if (!artwork) return { title: 'Artwork not found' };
   return {
-    title: `${artwork.title} — ${artwork.artist.username} — Atelier`,
+    title: `${artwork.title} — ${artwork.artist.username}`,
     description: artwork.description ?? `A work by ${artwork.artist.username} on Atelier.`,
   };
 }
