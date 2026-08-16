@@ -19,7 +19,10 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata = {
-  title: 'Atelier — Independent Artist Gallery',
+  title: {
+    default: 'Atelier — Independent Artist Gallery',
+    template: '%s — Atelier',
+  },
   description: 'A self-funded, invite-only gallery for independent artists.',
 };
 
