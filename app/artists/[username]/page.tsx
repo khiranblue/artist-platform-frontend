@@ -16,6 +16,28 @@ async function getArtistProfile(username: string, page: number): Promise<ArtistP
   return apiFetch(`/artists/${encodeURIComponent(username)}?page=${page}`);
 }
 
+export async function generateMetadata({ params }: { params: { username: string } }) {
+  // Only needs the profile header, so page 1 is enough. This is a
+  // separate request from the page body's own fetch (which may be on a
+  // different page number) — a small, accepted extra query on a public
+  // route, in exchange for proper per-artist titles and descriptions.
+  try {
+    const data = await getArtistProfile(params.username, 1);
+    const name = data.artist.display_name || data.artist.username;
+    return {
+      // Template appends " — Atelier"; no manual suffix here.
+      title: name,
+      // Fall back to a generated line when the artist left their bio
+      // blank, so the description tag is never empty for search engines.
+      description: data.artist.bio || `Explore artworks by ${name} on Atelier.`,
+    };
+  } catch {
+    // Missing/banned artist, or any fetch failure — a safe explicit
+    // title rather than a crash or an empty tag.
+    return { title: 'Artist not found' };
+  }
+}
+
 export default async function ArtistPage({
   params,
   searchParams,
