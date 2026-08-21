@@ -15,6 +15,9 @@ interface ArtworkDetail {
   preview_height: number | null;
   original_url?: string;
   artist: { username: string };
+  series_id?: string;
+  series_entry_count?: number;
+  note?: string | null;
 }
 
 async function getArtwork(id: string): Promise<ArtworkDetail | null> {
@@ -77,6 +80,12 @@ export default async function ArtworkPage({ params }: { params: { id: string } }
           {artwork.artist.username}
         </Link>
         {artwork.description && <p className={styles.description}>{artwork.description}</p>}
+        {artwork.note && <p className={styles.description}>{artwork.note}</p>}
+        {artwork.series_id && (artwork.series_entry_count ?? 0) > 1 && (
+          <Link href={`/series/${artwork.series_id}`} className={styles.artist}>
+            View the full series ({artwork.series_entry_count} images) →
+          </Link>
+        )}
       </div>
     </article>
   );
