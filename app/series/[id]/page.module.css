@@ -1,0 +1,115 @@
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-2) var(--space-5);
+}
+
+.header {
+  margin-bottom: var(--space-4);
+}
+
+.field {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  border: 1px solid var(--accent-dim);
+  border-radius: var(--radius);
+  padding: 0.15rem 0.5rem;
+  margin-bottom: var(--space-2);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 2.2rem;
+  margin: 0 0 var(--space-1);
+}
+
+.owner {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.owner:hover {
+  text-decoration: underline;
+}
+
+.span {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: var(--space-1) 0 0;
+}
+
+.privateNote {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  border-left: 2px solid var(--border);
+  padding-left: var(--space-1);
+  margin: var(--space-2) 0 0;
+}
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.entry {
+  position: relative;
+}
+
+.marker {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+
+.index {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--accent);
+}
+
+.date {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.frame {
+  display: block;
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.placeholder {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--surface-hover);
+}
+
+.note {
+  font-family: var(--font-body);
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin: var(--space-2) 0 0;
+  white-space: pre-wrap;
+}
