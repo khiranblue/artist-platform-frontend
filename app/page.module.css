@@ -54,3 +54,33 @@
   color: var(--text-muted);
   font-size: 0.85rem;
 }
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin: calc(-1 * var(--space-3)) 0 var(--space-4);
+}
+
+.filter,
+.filterActive {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+}
+
+.filter:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-dim);
+}
+
+.filterActive {
+  color: var(--accent);
+  border-color: var(--accent);
+}
