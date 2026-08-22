@@ -124,7 +124,14 @@ export default async function SeriesPage({ params }: { params: { id: string } })
                 {formatDate(entry.captured_at)}
               </time>
             </div>
-            <Link href={`/artworks/${entry.artwork_id}`} className={styles.frame}>
+            {/* Tapping opens the full-size preview itself (no separate page
+                exists for a series entry). Signed URL stays valid >= 12h. */}
+            <a
+              href={entry.preview_url ?? undefined}
+              target="_blank"
+              rel="noopener"
+              className={styles.frame}
+            >
               {entry.preview_url && entry.preview_width && entry.preview_height ? (
                 <Image
                   src={entry.preview_url}
@@ -138,7 +145,7 @@ export default async function SeriesPage({ params }: { params: { id: string } })
               ) : (
                 <div className={styles.placeholder} aria-hidden="true" />
               )}
-            </Link>
+            </a>
             <EntryNote artworkId={entry.artwork_id} initialNote={entry.note} editable={isOwner} />
           </li>
         ))}
