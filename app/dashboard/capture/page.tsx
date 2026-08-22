@@ -40,9 +40,18 @@ export default function CapturePage() {
   const [newField, setNewField] = useState('other');
 
   useEffect(() => {
+    // ?series=<id> (from a series page's "+ Capture" link) preselects that
+    // series so adding the next photo is one tap, not a dropdown hunt.
+    const preselected = new URLSearchParams(window.location.search).get('series');
     fetch('/api/dashboard/series')
       .then((r) => (r.ok ? r.json() : { series: [] }))
-      .then((d) => setOwnSeries(d.series ?? []))
+      .then((d) => {
+        const list: OwnSeries[] = d.series ?? [];
+        setOwnSeries(list);
+        if (preselected && list.some((x) => x.series_id === preselected)) {
+          setSeriesChoice(preselected);
+        }
+      })
       .catch(() => setOwnSeries([]));
   }, []);
 
