@@ -114,3 +114,26 @@
   padding: 0 var(--space-2) var(--space-2);
   margin: 0;
 }
+
+.deleteButton {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+}
+
+.deleteButton:hover:not(:disabled) {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.deleteButton:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
