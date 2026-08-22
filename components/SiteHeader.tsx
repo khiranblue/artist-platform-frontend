@@ -32,6 +32,9 @@ export function SiteHeader({ user }: { user: CurrentUser }) {
       <nav className={styles.nav}>
         {user ? (
           <>
+            <Link href="/dashboard/capture" className={styles.navLink}>
+              Capture
+            </Link>
             <Link href="/dashboard" className={styles.navLink}>
               My Work
             </Link>
