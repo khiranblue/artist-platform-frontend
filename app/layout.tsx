@@ -19,6 +19,8 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata = {
+  // Required so relative OG/twitter image URLs resolve to absolute ones.
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://artist-platform-frontend.vercel.app'),
   title: {
     default: 'Atelier — Independent Artist Gallery',
     template: '%s — Atelier',
