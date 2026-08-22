@@ -1,8 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    // Signed GCS URLs come from a single bucket host, but the path/query
-    // changes per request/expiry — remotePatterns needs the hostname only.
+    // Previews are already resized WebP from our own pipeline (sharp on
+    // Railway), stored in GCS me-central1 next to our users. Routing them
+    // through Vercel's optimizer (US) added ~4s per image and never cached,
+    // because every signed URL is unique. Serve them directly instead.
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
