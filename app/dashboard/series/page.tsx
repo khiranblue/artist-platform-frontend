@@ -22,10 +22,29 @@ const FIELD_LABELS: Record<string, string> = {
   other: 'Other',
 };
 
-function SeriesRow({ series }: { series: OwnSeries }) {
+function SeriesRow({ series, onDeleted }: { series: OwnSeries; onDeleted: (id: string) => void }) {
   const [visibility, setVisibility] = useState(series.visibility);
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  async function handleDelete() {
+    const count = series.entry_count;
+    const msg = count > 0
+      ? `Delete this series and its ${count} ${count === 1 ? 'image' : 'images'}? This cannot be undone.`
+      : 'Delete this empty series?';
+    if (!window.confirm(msg)) return;
+    setDeleting(true);
+    setError(null);
+    try {
+      const res = await fetch(`/api/series/${series.series_id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('failed');
+      onDeleted(series.series_id);
+    } catch {
+      setError('Could not delete this series.');
+      setDeleting(false);
+    }
+  }
 
   async function handleVisibilityChange(next: string) {
     const previous = visibility;
@@ -79,6 +98,9 @@ function SeriesRow({ series }: { series: OwnSeries }) {
           <option value="unlisted">Unlisted</option>
           <option value="public">Public</option>
         </select>
+        <button type="button" onClick={handleDelete} disabled={deleting} className={styles.deleteButton}>
+          {deleting ? 'Deleting…' : 'Delete'}
+        </button>
       </div>
       {error && <p className={styles.error}>{error}</p>}
     </div>
@@ -99,6 +121,10 @@ export default function MySeriesPage() {
       .catch(() => setError('Could not load your series.'));
   }, []);
 
+  function handleDeleted(id: string) {
+    setSeries((prev) => (prev ? prev.filter((x) => x.series_id !== id) : prev));
+  }
+
   return (
     <div>
       <div className={styles.headerRow}>
@@ -116,7 +142,7 @@ export default function MySeriesPage() {
       {series && series.length > 0 && (
         <div className={styles.list}>
           {series.map((s) => (
-            <SeriesRow key={s.series_id} series={s} />
+            <SeriesRow key={s.series_id} series={s} onDeleted={handleDeleted} />
           ))}
         </div>
       )}
