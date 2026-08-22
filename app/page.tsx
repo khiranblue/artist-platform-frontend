@@ -1,5 +1,6 @@
+import Link from 'next/link';
 import { apiFetch } from '@/lib/api';
-import { ArtworkCard, ArtworkSummary } from '@/components/ArtworkCard';
+import { SeriesCard, SeriesSummary } from '@/components/SeriesCard';
 import styles from './page.module.css';
 
 // Revalidated periodically rather than fully static or fully dynamic —
@@ -7,12 +8,28 @@ import styles from './page.module.css';
 // publish, but doesn't need to be real-time on every request.
 export const revalidate = 60;
 
-async function getGallery(): Promise<{ artworks: ArtworkSummary[] }> {
-  return apiFetch('/artworks?limit=24');
+const FIELDS: Array<[string, string]> = [
+  ['painting', 'Painting'],
+  ['wood', 'Wood'],
+  ['metal', 'Metal'],
+  ['plants', 'Plants'],
+  ['other', 'Other'],
+];
+const FIELD_KEYS = FIELDS.map(([k]) => k);
+
+async function getGallery(field?: string): Promise<{ series: SeriesSummary[] }> {
+  const qs = field ? `&field=${encodeURIComponent(field)}` : '';
+  return apiFetch(`/series?limit=24${qs}`);
 }
 
-export default async function HomePage() {
-  const { artworks } = await getGallery();
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams?: { field?: string };
+}) {
+  const raw = searchParams?.field;
+  const field = raw && FIELD_KEYS.includes(raw) ? raw : undefined;
+  const { series } = await getGallery(field);
 
   return (
     <div className={styles.page}>
@@ -23,12 +40,27 @@ export default async function HomePage() {
         </p>
       </section>
 
-      {artworks.length === 0 ? (
+      <nav className={styles.filters} aria-label="Filter by field">
+        <Link href="/" className={!field ? styles.filterActive : styles.filter}>
+          All
+        </Link>
+        {FIELDS.map(([key, label]) => (
+          <Link
+            key={key}
+            href={`/?field=${key}`}
+            className={field === key ? styles.filterActive : styles.filter}
+          >
+            {label}
+          </Link>
+        ))}
+      </nav>
+
+      {series.length === 0 ? (
         <p className={styles.empty}>Nothing published yet. Check back soon.</p>
       ) : (
         <div className={styles.grid}>
-          {artworks.map((artwork) => (
-            <ArtworkCard key={artwork.artwork_id} artwork={artwork} />
+          {series.map((s) => (
+            <SeriesCard key={s.series_id} series={s} />
           ))}
         </div>
       )}
