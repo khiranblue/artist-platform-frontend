@@ -113,3 +113,23 @@
   margin: var(--space-2) 0 0;
   white-space: pre-wrap;
 }
+
+.captureLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: var(--space-2);
+  padding: 0 var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid var(--accent-dim);
+  border-radius: var(--radius);
+}
+
+.captureLink:hover {
+  background: var(--surface-hover);
+}
