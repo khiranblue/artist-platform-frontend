@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { apiFetch, ApiError } from '@/lib/api';
-import { ArtworkCard, ArtworkSummary } from '@/components/ArtworkCard';
+import { SeriesCard, SeriesSummary } from '@/components/SeriesCard';
 import styles from './page.module.css';
 
 interface ArtistProfileResponse {
   artist: { username: string; display_name: string | null; bio: string | null };
-  artworks: Omit<ArtworkSummary, 'artist'>[];
+  series: SeriesSummary[];
   page: number;
   limit: number;
   has_more: boolean;
@@ -60,7 +60,7 @@ export default async function ArtistPage({
     throw err;
   }
 
-  const { artist, artworks, has_more } = data;
+  const { artist, series, has_more } = data;
   // Safe fallback for a missing display name — never render a raw
   // technical username as if it were a chosen display name.
   const displayName = artist.display_name || `@${artist.username}`;
@@ -72,15 +72,12 @@ export default async function ArtistPage({
         {artist.bio && <p className={styles.bio}>{artist.bio}</p>}
       </section>
 
-      {artworks.length === 0 ? (
+      {series.length === 0 ? (
         <p className={styles.empty}>No published work yet.</p>
       ) : (
         <div className={styles.grid}>
-          {artworks.map((artwork) => (
-            <ArtworkCard
-              key={artwork.artwork_id}
-              artwork={{ ...artwork, artist: { username: artist.username } }}
-            />
+          {series.map((s) => (
+            <SeriesCard key={s.series_id} series={s} />
           ))}
         </div>
       )}
