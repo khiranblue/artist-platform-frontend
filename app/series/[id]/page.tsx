@@ -59,9 +59,23 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   const series = await getSeries(params.id);
   if (!series) return { title: 'Series not found' };
   const name = series.owner.display_name || series.owner.username;
+  const title = `${series.title ?? 'Untitled series'} — ${name}`;
+  const description = `${series.entries.length} ${series.entries.length === 1 ? 'image' : 'images'} over time by ${name} on Atelier.`;
+  // Cover = latest entry, matching the gallery card. Signed URLs expire,
+  // but WhatsApp/Telegram/Twitter fetch and cache the image at share time.
+  const cover = series.entries[series.entries.length - 1];
   return {
-    title: `${series.title ?? 'Untitled series'} — ${name}`,
-    description: `${series.entries.length} images over time by ${name} on Atelier.`,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'article',
+      images: cover?.preview_url
+        ? [{ url: cover.preview_url, width: cover.preview_width ?? undefined, height: cover.preview_height ?? undefined, alt: cover.title }]
+        : [],
+    },
+    twitter: { card: cover?.preview_url ? 'summary_large_image' : 'summary' },
   };
 }
 
