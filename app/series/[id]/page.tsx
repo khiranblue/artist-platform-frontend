@@ -6,6 +6,10 @@ import { getCurrentUser } from '@/lib/currentUser';
 import { EntryNote } from '@/components/EntryNote';
 import styles from './page.module.css';
 
+// Owner requests carry an Authorization header and bypass the data cache;
+// anonymous visitors get a copy refreshed every minute.
+export const revalidate = 60;
+
 interface SeriesEntry {
   artwork_id: string;
   title: string;
