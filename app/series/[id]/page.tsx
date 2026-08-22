@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { apiFetch, ApiError } from '@/lib/api';
+import { getCurrentUser } from '@/lib/currentUser';
+import { EntryNote } from '@/components/EntryNote';
 import styles from './page.module.css';
 
 interface SeriesEntry {
@@ -64,6 +66,8 @@ export default async function SeriesPage({ params }: { params: { id: string } })
   if (!series) notFound();
 
   const ownerName = series.owner.display_name || series.owner.username;
+  const currentUser = await getCurrentUser();
+  const isOwner = currentUser?.username === series.owner.username;
   const first = series.entries[0];
   const last = series.entries[series.entries.length - 1];
 
@@ -112,7 +116,7 @@ export default async function SeriesPage({ params }: { params: { id: string } })
                 <div className={styles.placeholder} aria-hidden="true" />
               )}
             </Link>
-            {entry.note && <p className={styles.note}>{entry.note}</p>}
+            <EntryNote artworkId={entry.artwork_id} initialNote={entry.note} editable={isOwner} />
           </li>
         ))}
       </ol>
