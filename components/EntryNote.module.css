@@ -1,0 +1,92 @@
+.note {
+  font-family: var(--font-body);
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin: var(--space-2) 0 0;
+  white-space: pre-wrap;
+}
+
+.editable {
+  display: block;
+  width: 100%;
+  text-align: start;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: text;
+  color: inherit;
+}
+
+.editable:hover .note,
+.editable:hover .addNote {
+  color: var(--text-primary);
+}
+
+.addNote {
+  display: inline-block;
+  margin-top: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-dim);
+}
+
+.editor {
+  margin-top: var(--space-2);
+}
+
+.textarea {
+  width: 100%;
+  background: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  padding: var(--space-1);
+  resize: vertical;
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-1);
+  margin-top: var(--space-1);
+}
+
+.save,
+.cancel {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: var(--radius);
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+}
+
+.save {
+  background: var(--accent);
+  color: var(--bg);
+  border: 1px solid var(--accent);
+}
+
+.cancel {
+  background: none;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.save:disabled,
+.cancel:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.error {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--danger);
+  margin: var(--space-1) 0 0;
+}
