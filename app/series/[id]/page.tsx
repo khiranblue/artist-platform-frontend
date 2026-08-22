@@ -89,6 +89,11 @@ export default async function SeriesPage({ params }: { params: { id: string } })
             {series.entries.length > 1 && ` · ${formatDate(first.captured_at)} → ${formatDate(last.captured_at)}`}
           </p>
         )}
+        {isOwner && (
+          <Link href={`/dashboard/capture?series=${series.series_id}`} className={styles.captureLink}>
+            + Capture the next photo
+          </Link>
+        )}
         {series.visibility && series.visibility !== 'public' && (
           <p className={styles.privateNote}>
             {series.visibility === 'private' ? 'Private — only you can see this.' : 'Unlisted — only by direct link.'}
