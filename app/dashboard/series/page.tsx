@@ -24,6 +24,32 @@ const FIELD_LABELS: Record<string, string> = {
 
 function SeriesRow({ series, onDeleted }: { series: OwnSeries; onDeleted: (id: string) => void }) {
   const [visibility, setVisibility] = useState(series.visibility);
+  const [title, setTitle] = useState<string | null>(series.title);
+  const [field, setField] = useState(series.field);
+  const [editing, setEditing] = useState(false);
+  const [draftTitle, setDraftTitle] = useState(series.title ?? '');
+  const [draftField, setDraftField] = useState(series.field);
+
+  async function handleSaveDetails() {
+    setSaving(true);
+    setError(null);
+    try {
+      const res = await fetch(`/api/series/${series.series_id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: draftTitle.trim() || null, field: draftField }),
+      });
+      if (!res.ok) throw new Error('failed');
+      const data = await res.json();
+      setTitle(data.title ?? null);
+      setField(data.field ?? draftField);
+      setEditing(false);
+    } catch {
+      setError('Could not save the changes.');
+    } finally {
+      setSaving(false);
+    }
+  }
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -79,15 +105,58 @@ function SeriesRow({ series, onDeleted }: { series: OwnSeries; onDeleted: (id: s
         </div>
       </Link>
       <div className={styles.footer}>
-        <div>
-          <Link href={`/series/${series.series_id}`} className={styles.title}>
-            {series.title ?? 'Untitled'}
-          </Link>
-          <div className={styles.meta}>
-            {FIELD_LABELS[series.field] ?? series.field} · {series.entry_count}{' '}
-            {series.entry_count === 1 ? 'image' : 'images'}
+        {editing ? (
+          <div className={styles.editor}>
+            <input
+              className={styles.titleInput}
+              value={draftTitle}
+              onChange={(e) => setDraftTitle(e.target.value)}
+              placeholder="Series title"
+              maxLength={255}
+              autoFocus
+            />
+            <select
+              className={styles.visibilitySelect}
+              value={draftField}
+              onChange={(e) => setDraftField(e.target.value)}
+            >
+              {Object.entries(FIELD_LABELS).map(([k, l]) => (
+                <option key={k} value={k}>
+                  {l}
+                </option>
+              ))}
+            </select>
+            <button type="button" className={styles.saveButton} onClick={handleSaveDetails} disabled={saving}>
+              {saving ? 'Saving…' : 'Save'}
+            </button>
+            <button
+              type="button"
+              className={styles.deleteButton}
+              onClick={() => {
+                setDraftTitle(title ?? '');
+                setDraftField(field);
+                setEditing(false);
+              }}
+              disabled={saving}
+            >
+              Cancel
+            </button>
           </div>
-        </div>
+        ) : (
+          <div>
+            <Link href={`/series/${series.series_id}`} className={styles.title}>
+              {title ?? 'Untitled'}
+            </Link>
+            <div className={styles.meta}>
+              {FIELD_LABELS[field] ?? field} · {series.entry_count}{' '}
+              {series.entry_count === 1 ? 'image' : 'images'}
+              {' · '}
+              <button type="button" className={styles.editLink} onClick={() => setEditing(true)}>
+                Edit
+              </button>
+            </div>
+          </div>
+        )}
         <select
           value={visibility}
           onChange={(e) => handleVisibilityChange(e.target.value)}
