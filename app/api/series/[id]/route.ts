@@ -16,3 +16,14 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     return NextResponse.json({ error: 'internal_error' }, { status: 500 });
   }
 }
+
+export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    await apiFetch(`/series/${params.id}`, { method: 'DELETE', auth: true });
+    return new NextResponse(null, { status: 204 });
+  } catch (err) {
+    if (err instanceof ApiError) return NextResponse.json(err.body, { status: err.status });
+    console.error('delete series proxy error:', err);
+    return NextResponse.json({ error: 'internal_error' }, { status: 500 });
+  }
+}
