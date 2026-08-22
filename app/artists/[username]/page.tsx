@@ -4,6 +4,10 @@ import { apiFetch, ApiError } from '@/lib/api';
 import { SeriesCard, SeriesSummary } from '@/components/SeriesCard';
 import styles from './page.module.css';
 
+// Same policy as the home gallery: public, SEO-relevant, refreshed every
+// minute rather than served forever from the data cache.
+export const revalidate = 60;
+
 interface ArtistProfileResponse {
   artist: { username: string; display_name: string | null; bio: string | null };
   series: SeriesSummary[];
