@@ -67,6 +67,9 @@ export default function LoginPage() {
         <a href="/forgot-password" className={styles.link}>
           Forgot your password?
         </a>
+        <a href="/register" className={styles.link}>
+          Have an invite code? Join here
+        </a>
       </form>
     </div>
   );
