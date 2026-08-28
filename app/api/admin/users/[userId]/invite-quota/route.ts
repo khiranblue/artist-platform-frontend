@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { apiFetch, ApiError } from '@/lib/api';
+import { isSameOriginRequest } from '@/lib/csrf';
 
 // Proxies POST /api/admin/users/:userId/invite-quota — same pattern as
 // account/email/route.ts: read the httpOnly session cookie server-side,
 // forward as Authorization: Bearer, never expose the token to the client.
 export async function POST(req: NextRequest, { params }: { params: { userId: string } }) {
+  if (!isSameOriginRequest(req)) {
+    return NextResponse.json({ error: 'csrf_rejected' }, { status: 403 });
+  }
+
   const body = await req.json().catch(() => null);
   try {
     const result = await apiFetch(`/admin/users/${params.userId}/invite-quota`, {
