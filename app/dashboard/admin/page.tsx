@@ -18,12 +18,18 @@ interface InviteTreeNode {
   invites_pending: number;
 }
 
-// Deliberately no sidebar link to this page — matches the backend's
-// flat-404 philosophy (see requireAdmin in the backend repo): the admin
-// surface isn't advertised, only reachable by someone who already knows
-// the URL. A non-admin session simply sees "No data available." below,
-// never a message that confirms an admin area exists.
+// Authorization is decided entirely by the initial data fetch. Until it
+// resolves, and if it fails, this component renders nothing at all — no
+// heading, no table shell, no form labels. A logged-in artist who is not
+// an admin (or anyone not authenticated) gets a blank page, not a page
+// that visibly says "Admin" and shows disabled-looking controls. This is
+// the client-side half of the same flat-404 principle the backend already
+// applies: existence of this surface is never confirmed to the wrong
+// viewer, only real authorization unlocks anything.
+type AuthState = 'pending' | 'authorized' | 'unauthorized';
+
 export default function AdminPage() {
+  const [authState, setAuthState] = useState<AuthState>('pending');
   const [nodes, setNodes] = useState<InviteTreeNode[] | null>(null);
   const [loadError, setLoadError] = useState(false);
 
@@ -47,13 +53,16 @@ export default function AdminPage() {
       if (!res.ok) {
         setLoadError(true);
         setNodes(null);
+        setAuthState('unauthorized');
         return;
       }
       const data = await res.json();
       setNodes(data.nodes);
       setLoadError(false);
+      setAuthState('authorized');
     } catch {
       setLoadError(true);
+      setAuthState('unauthorized');
     }
   }
 
@@ -77,7 +86,7 @@ export default function AdminPage() {
         setGrantError(data.message || data.error || 'Could not grant quota.');
         return;
       }
-      setGrantSuccess(`${data.username}: ${data.previous_quota} → ${data.new_quota}`);
+      setGrantSuccess(`${data.username}: ${data.previous_quota} -> ${data.new_quota}`);
       setGrantAmount('');
       setGrantReason('');
       setActiveGrantId(null);
@@ -109,6 +118,12 @@ export default function AdminPage() {
     } finally {
       setHideSubmitting(false);
     }
+  }
+
+  // Pending or unauthorized: render truly nothing. No heading, no layout
+  // hint that this is an admin surface.
+  if (authState !== 'authorized') {
+    return null;
   }
 
   return (
