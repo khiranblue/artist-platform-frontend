@@ -34,7 +34,7 @@ export default async function HomePage({
   return (
     <div className={styles.page}>
       <section className={styles.hero}>
-        <h1 className={styles.heroTitle}>Amateurs. Work on the way.</h1>
+        <h1 className={styles.heroTitle}>Everyday artists. Work on the way.</h1>
         <p className={styles.heroSub}>
           An invite-only gallery. No algorithm, no likes, no one judging.
         </p>
