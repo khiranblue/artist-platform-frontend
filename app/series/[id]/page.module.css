@@ -94,7 +94,8 @@
 }
 
 .frame {
-  display: block;
+  display: flex;
+  justify-content: center;
   background: var(--surface);
   border-radius: var(--radius);
   overflow: hidden;
