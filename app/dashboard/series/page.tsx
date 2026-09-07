@@ -206,7 +206,13 @@ export default function MySeriesPage() {
       {error && <p className={styles.error}>{error}</p>}
       {!error && series === null && <p className={styles.empty}>Loading…</p>}
       {series && series.length === 0 && (
-        <p className={styles.empty}>Nothing yet. Capture your first photo.</p>
+        <div className={styles.empty}>
+          <p>Nothing here yet — and that&apos;s fine.</p>
+          <p>
+            Photograph anything you&apos;re working on. Even a rough one. No one sees it but
+            you.
+          </p>
+        </div>
       )}
       {series && series.length > 0 && (
         <div className={styles.list}>
