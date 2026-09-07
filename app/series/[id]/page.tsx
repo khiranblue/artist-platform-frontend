@@ -138,7 +138,7 @@ export default async function SeriesPage({ params }: { params: { id: string } })
                   alt={entry.title}
                   width={entry.preview_width}
                   height={entry.preview_height}
-                  style={{ width: '100%', height: 'auto' }}
+                  style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '70vh' }}
                   sizes="(max-width: 768px) 100vw, 720px"
                   priority={index === 0}
                 />
