@@ -177,6 +177,10 @@ export default function CapturePage() {
 
       {stage === 'idle' && (
         <div className={styles.card}>
+          <p style={{ color: 'var(--text-muted)', marginTop: 0 }}>
+            Photograph whatever is in front of you. Rough, unfinished, badly lit &mdash; it
+            doesn&apos;t matter.
+          </p>
           <label className={formStyles.submit} style={{ display: 'inline-block', cursor: 'pointer' }}>
             Take a photo
             <input
@@ -196,7 +200,11 @@ export default function CapturePage() {
       {(stage === 'uploading' || stage === 'processing') && (
         <div className={styles.card}>
           {previewSrc && <img src={previewSrc} alt="" style={{ width: '100%', borderRadius: 'var(--radius)' }} />}
-          <p>{stage === 'uploading' ? 'Uploading…' : 'Processing…'}</p>
+          <p>
+            {stage === 'uploading'
+              ? 'Uploading…'
+              : 'Processing your image — this takes a few seconds.'}
+          </p>
         </div>
       )}
 
