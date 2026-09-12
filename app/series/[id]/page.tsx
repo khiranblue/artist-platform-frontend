@@ -108,9 +108,22 @@ export default async function SeriesPage({ params }: { params: { id: string } })
             + Capture the next photo
           </Link>
         )}
-        {series.visibility && series.visibility !== 'public' && (
+        {/* The backend sends `visibility` to the owner only (seriesService.getSeries),
+            so this block is owner-only by construction; isOwner makes that explicit.
+            The link carries an inline colour because globals.css sets `a { color: inherit }`,
+            which would otherwise render it indistinguishable from the note text. */}
+        {isOwner && series.visibility && series.visibility !== 'public' && (
           <p className={styles.privateNote}>
-            {series.visibility === 'private' ? 'Private — only you can see this.' : 'Unlisted — only by direct link.'}
+            {series.visibility === 'private'
+              ? 'Private — only you can see this. Publish it from '
+              : 'Unlisted — only people with the link. Change it in '}
+            <Link
+              href="/dashboard/series"
+              style={{ color: 'var(--accent)', textDecoration: 'underline' }}
+            >
+              My Series
+            </Link>
+            {series.visibility === 'private' ? " when you're ready." : '.'}
           </p>
         )}
       </header>
