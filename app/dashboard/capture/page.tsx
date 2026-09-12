@@ -184,15 +184,22 @@ export default function CapturePage() {
           {/* Arriving with ?series=<id> means "add to this one", so the series'
               latest image is shown before the camera opens. A series shot from
               scattered angles reads as loose photos rather than progress, and
-              this is the cheapest way to keep the framing consistent. Nothing
-              is shown when no series is preselected — there is nothing to show. */}
+              this is the cheapest way to keep the framing consistent. Height is
+              capped so the camera button stays above the fold on a phone.
+              Nothing is shown when no series is preselected. */}
           {previousPhoto && (
             <figure style={{ margin: '0 0 var(--space-2)' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={previousPhoto}
                 alt=""
-                style={{ width: '100%', borderRadius: 'var(--radius)', display: 'block' }}
+                style={{
+                  width: '100%',
+                  maxHeight: '38vh',
+                  objectFit: 'contain',
+                  borderRadius: 'var(--radius)',
+                  display: 'block',
+                }}
               />
               <figcaption style={{ color: 'var(--text-muted)', marginTop: 'var(--space-1)' }}>
                 Your last photo in this series. Try the same angle.
