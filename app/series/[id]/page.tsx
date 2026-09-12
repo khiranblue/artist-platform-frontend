@@ -59,8 +59,11 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   const series = await getSeries(params.id);
   if (!series) return { title: 'Series not found' };
   const name = series.owner.display_name || series.owner.username;
-  const title = `${series.title ?? 'Untitled series'} — ${name}`;
-  const description = `${series.entries.length} ${series.entries.length === 1 ? 'image' : 'images'} over time by ${name} on Atelier.`;
+  const single = series.entries.length === 1;
+  const title = `${series.title ?? (single ? 'Untitled' : 'Untitled series')} — ${name}`;
+  const description = single
+    ? `A work by ${name} on Atelier.`
+    : `${series.entries.length} images over time by ${name} on Atelier.`;
   // Cover = latest entry, matching the gallery card. Signed URLs expire,
   // but WhatsApp/Telegram/Twitter fetch and cache the image at share time.
   const cover = series.entries[series.entries.length - 1];
@@ -88,19 +91,26 @@ export default async function SeriesPage({ params }: { params: { id: string } })
   const isOwner = currentUser?.username === series.owner.username;
   const first = series.entries[0];
   const last = series.entries[series.entries.length - 1];
+  // A single image is shown as a work, not as a series of one: no "series"
+  // wording, no numbered timeline, no "Day 1". The second photo is what
+  // turns it into a timeline, and it does so by itself.
+  const isSingle = series.entries.length === 1;
 
   return (
     <article className={styles.page}>
       <header className={styles.header}>
         <span className={styles.field}>{FIELD_LABELS[series.field] ?? series.field}</span>
-        <h1 className={styles.title}>{series.title ?? 'Untitled series'}</h1>
+        <h1 className={styles.title}>
+          {series.title ?? (isSingle ? 'Untitled' : 'Untitled series')}
+        </h1>
         <Link href={`/artists/${series.owner.username}`} className={styles.owner}>
           {ownerName}
         </Link>
         {first && last && (
           <p className={styles.span}>
-            {series.entries.length} {series.entries.length === 1 ? 'image' : 'images'}
-            {series.entries.length > 1 && ` · ${formatDate(first.captured_at)} → ${formatDate(last.captured_at)}`}
+            {isSingle
+              ? formatDate(first.captured_at)
+              : `${series.entries.length} images · ${formatDate(first.captured_at)} → ${formatDate(last.captured_at)}`}
           </p>
         )}
         {isOwner && (
@@ -128,6 +138,33 @@ export default async function SeriesPage({ params }: { params: { id: string } })
         )}
       </header>
 
+      {isSingle && first ? (
+        <div className={styles.entry}>
+          {/* Tapping opens the full-size preview itself (no separate page
+              exists for a series entry). Signed URL stays valid >= 12h. */}
+          <a href={first.preview_url ?? undefined} target="_blank" rel="noopener" className={styles.frame}>
+            {first.preview_url && first.preview_width && first.preview_height ? (
+              <Image
+                src={first.preview_url}
+                alt={first.title}
+                width={first.preview_width}
+                height={first.preview_height}
+                style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '80vh' }}
+                sizes="(max-width: 768px) 100vw, 720px"
+                priority
+              />
+            ) : (
+              <div className={styles.placeholder} aria-hidden="true" />
+            )}
+          </a>
+          <EntryNote artworkId={first.artwork_id} initialNote={first.note} editable={isOwner} />
+          {isOwner && (
+            <p className={styles.privateNote}>
+              Add another photo later and this becomes a timeline.
+            </p>
+          )}
+        </div>
+      ) : (
       <ol className={styles.timeline}>
         {series.entries.map((entry, index) => (
           <li key={entry.artwork_id} className={styles.entry}>
@@ -163,6 +200,7 @@ export default async function SeriesPage({ params }: { params: { id: string } })
           </li>
         ))}
       </ol>
+      )}
     </article>
   );
 }
