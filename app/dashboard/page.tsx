@@ -49,14 +49,34 @@ export default async function DashboardOverviewPage() {
 
   const latest = await getLatestSeries();
 
-  const usedPct = Math.min(
-    (user.storage_used_mb / Math.max(user.storage_quota_mb, 0.01)) * 100,
-    100
-  );
-
   return (
     <div>
       <h1 className={styles.heading}>Overview</h1>
+
+      {/* Account rows were removed on purpose: the username is already in the
+          header and the email belongs in Settings, where it can be changed.
+          What is left is what an artist actually needs on this screen — the
+          work in progress, anything wrong with the account, and the space
+          left. Status shows only when it is NOT healthy: a permanent
+          "Active" line is read every day and says nothing. */}
+      {user.account_status !== 'active' && (
+        <div className={styles.card} style={{ borderColor: 'var(--danger)' }}>
+          <p style={{ margin: 0 }}>Your account status is {user.account_status}.</p>
+        </div>
+      )}
+      {user.email_verification_pending && (
+        <div className={styles.card}>
+          <p style={{ margin: 0 }}>
+            Your email address isn&apos;t confirmed yet.{' '}
+            <Link
+              href="/dashboard/settings"
+              style={{ color: 'var(--accent)', textDecoration: 'underline' }}
+            >
+              Settings
+            </Link>
+          </p>
+        </div>
+      )}
 
       {/* Picking up where you left off is one tap: ?series=<id> preselects the
           series in Capture and shows its last photo before the camera opens. */}
@@ -108,34 +128,24 @@ export default async function DashboardOverviewPage() {
           <p style={{ marginTop: 0 }}>Nothing here yet &mdash; and that&apos;s fine.</p>
           <p style={{ color: 'var(--text-muted)', marginBottom: 0 }}>
             Photograph anything you&apos;re working on. Even a rough one. No one sees it but
-            you. <Link href="/dashboard/capture" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>Take the first photo</Link>.
+            you.{' '}
+            <Link
+              href="/dashboard/capture"
+              style={{ color: 'var(--accent)', textDecoration: 'underline' }}
+            >
+              Take the first photo
+            </Link>
+            .
           </p>
         </div>
       )}
 
-      <div className={styles.card}>
-        <div className={styles.row}>
-          <span className={styles.rowLabel}>Username</span>
-          <span>{user.username}</span>
-        </div>
-        <div className={styles.row}>
-          <span className={styles.rowLabel}>Account status</span>
-          <span>{user.account_status}</span>
-        </div>
-        <div className={styles.row}>
-          <span className={styles.rowLabel}>Storage</span>
-          <span>
-            {user.storage_used_mb.toFixed(1)} MB / {user.storage_quota_mb.toFixed(0)} MB (
-            {usedPct.toFixed(0)}%)
-          </span>
-        </div>
-        <div className={styles.row}>
-          <span className={styles.rowLabel}>Email</span>
-          <span>
-            {user.email ? user.email : user.email_verification_pending ? 'Pending verification' : 'Not set'}
-          </span>
-        </div>
-      </div>
+      {/* Settings shows neither storage nor status, so this line is the only
+          place an artist can see how much room is left. Small, at the bottom,
+          and not a headline. */}
+      <p className={styles.rowLabel} style={{ display: 'block', marginTop: 'var(--space-3)' }}>
+        {user.storage_used_mb.toFixed(1)} of {user.storage_quota_mb.toFixed(0)} MB used
+      </p>
     </div>
   );
 }
