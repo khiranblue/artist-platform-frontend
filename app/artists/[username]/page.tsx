@@ -77,7 +77,7 @@ export default async function ArtistPage({
       </section>
 
       {series.length === 0 ? (
-        <p className={styles.empty}>No published work yet.</p>
+        <p className={styles.empty}>Nothing here yet &mdash; and that&apos;s fine.</p>
       ) : (
         <div className={styles.grid}>
           {series.map((s) => (
