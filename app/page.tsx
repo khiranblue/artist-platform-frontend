@@ -56,7 +56,10 @@ export default async function HomePage({
       </nav>
 
       {series.length === 0 ? (
-        <p className={styles.empty}>Nothing published yet. Check back soon.</p>
+        <div className={styles.empty}>
+          <p>Nothing public yet.</p>
+          <p>Work appears here only when an artist decides to publish it.</p>
+        </div>
       ) : (
         <div className={styles.grid}>
           {series.map((s) => (
