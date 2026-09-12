@@ -203,6 +203,19 @@ export default function MySeriesPage() {
         </Link>
       </div>
 
+      {/* One legend for the whole list: the three options are explained once
+          here rather than inside each <select>, whose width follows its
+          longest option and would break the card footer row on a phone. */}
+      {series && series.length > 0 && (
+        <p
+          className={styles.empty}
+          style={{ marginTop: 'calc(-1 * var(--space-2))', marginBottom: 'var(--space-3)' }}
+        >
+          Private — only you. Unlisted — anyone with the link, not in the gallery. Public —
+          shown in the gallery.
+        </p>
+      )}
+
       {error && <p className={styles.error}>{error}</p>}
       {!error && series === null && <p className={styles.empty}>Loading…</p>}
       {series && series.length === 0 && (
