@@ -12,6 +12,7 @@ interface OwnSeries {
   title: string | null;
   field: string;
   entry_count: number;
+  cover_url: string | null;
 }
 
 const FIELDS: Array<[string, string]> = [
@@ -171,12 +172,33 @@ export default function CapturePage() {
     }
   }
 
+  const previousPhoto =
+    ownSeries.find((s) => s.series_id === seriesChoice)?.cover_url ?? null;
+
   return (
     <div>
       <h1 className={styles.heading}>Capture</h1>
 
       {stage === 'idle' && (
         <div className={styles.card}>
+          {/* Arriving with ?series=<id> means "add to this one", so the series'
+              latest image is shown before the camera opens. A series shot from
+              scattered angles reads as loose photos rather than progress, and
+              this is the cheapest way to keep the framing consistent. Nothing
+              is shown when no series is preselected — there is nothing to show. */}
+          {previousPhoto && (
+            <figure style={{ margin: '0 0 var(--space-2)' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={previousPhoto}
+                alt=""
+                style={{ width: '100%', borderRadius: 'var(--radius)', display: 'block' }}
+              />
+              <figcaption style={{ color: 'var(--text-muted)', marginTop: 'var(--space-1)' }}>
+                Your last photo in this series. Try the same angle.
+              </figcaption>
+            </figure>
+          )}
           <p style={{ color: 'var(--text-muted)', marginTop: 0 }}>
             Photograph whatever is in front of you. Rough, unfinished, badly lit &mdash; it
             doesn&apos;t matter.
