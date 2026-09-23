@@ -42,7 +42,8 @@ export function RegisterForm() {
         setError(data?.error || data?.message || 'Registration failed. Check your invite code.');
         return;
       }
-      router.push('/');
+      // New accounts get the one sign-up question (display name) first.
+      router.push('/welcome');
       router.refresh();
     } finally {
       setSubmitting(false);
