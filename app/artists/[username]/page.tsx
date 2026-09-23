@@ -72,8 +72,21 @@ export default async function ArtistPage({
   return (
     <div className={styles.page}>
       <section className={styles.hero}>
-        <h1 className={styles.name}>{displayName}</h1>
-        {artist.bio && <p className={styles.bio}>{artist.bio}</p>}
+        {/* dir="auto": a name or bio written in Arabic reads right-to-left.
+            pre-line keeps the line breaks the artist typed; overflowWrap
+            stops one long unbroken word from overflowing on a phone. */}
+        <h1 className={styles.name} dir="auto" style={{ overflowWrap: 'anywhere' }}>
+          {displayName}
+        </h1>
+        {artist.bio && (
+          <p
+            className={styles.bio}
+            dir="auto"
+            style={{ whiteSpace: 'pre-line', overflowWrap: 'anywhere' }}
+          >
+            {artist.bio}
+          </p>
+        )}
       </section>
 
       {series.length === 0 ? (
