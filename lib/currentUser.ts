@@ -3,6 +3,8 @@ import { getSessionToken } from './session';
 
 export interface CurrentUser {
   username: string;
+  display_name: string | null;
+  bio: string | null;
   account_status: string;
   storage_quota_mb: number;
   storage_used_mb: number;
