@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { apiFetch, ApiError } from '@/lib/api';
 import { getCurrentUser } from '@/lib/currentUser';
 import { EntryNote } from '@/components/EntryNote';
+import { DeleteEntryButton } from '@/components/DeleteEntryButton';
 import styles from './page.module.css';
 
 // Owner requests carry an Authorization header and bypass the data cache;
@@ -153,6 +154,11 @@ export default async function SeriesPage({ params }: { params: { id: string } })
 
       {isSingle && first ? (
         <div className={styles.entry}>
+          {isOwner && (
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 'var(--space-1)' }}>
+              <DeleteEntryButton mode="work" artworkId={first.artwork_id} seriesId={series.series_id} />
+            </div>
+          )}
           {/* Tapping opens the full-size preview itself (no separate page
               exists for a series entry). Signed URL stays valid >= 12h. */}
           <a href={first.preview_url ?? undefined} target="_blank" rel="noopener" className={styles.frame}>
@@ -186,6 +192,11 @@ export default async function SeriesPage({ params }: { params: { id: string } })
               <time className={styles.date} dateTime={entry.captured_at}>
                 {formatDate(entry.captured_at)}
               </time>
+              {isOwner && (
+                <span style={{ marginLeft: 'auto', alignSelf: 'center' }}>
+                  <DeleteEntryButton mode="photo" artworkId={entry.artwork_id} seriesId={series.series_id} />
+                </span>
+              )}
             </div>
             {/* Tapping opens the full-size preview itself (no separate page
                 exists for a series entry). Signed URL stays valid >= 12h. */}
