@@ -103,7 +103,20 @@ export default async function SeriesPage({ params }: { params: { id: string } })
         <h1 className={styles.title}>
           {series.title ?? (isSingle ? 'Untitled' : 'Untitled series')}
         </h1>
-        <Link href={`/artists/${series.owner.username}`} className={styles.owner}>
+        {/* Up to 60 characters: kept to one line, cut with an ellipsis. */}
+        <Link
+          href={`/artists/${series.owner.username}`}
+          className={styles.owner}
+          dir="auto"
+          title={ownerName}
+          style={{
+            maxWidth: '100%',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            verticalAlign: 'bottom',
+          }}
+        >
           {ownerName}
         </Link>
         {first && last && (
