@@ -20,6 +20,7 @@ export interface SeriesSummary {
 export function SeriesCard({ series }: { series: SeriesSummary }) {
   const title = series.title ?? 'Untitled';
   const href = `/series/${series.series_id}`;
+  const ownerName = series.owner.display_name || series.owner.username;
   return (
     <div className={styles.card}>
       <Link href={href} className={styles.imageLink}>
@@ -45,8 +46,16 @@ export function SeriesCard({ series }: { series: SeriesSummary }) {
             <span className={styles.artist}> · {series.entry_count} images</span>
           )}
         </Link>
-        <Link href={`/artists/${series.owner.username}`} className={styles.artist}>
-          {series.owner.display_name || series.owner.username}
+        {/* A display name can be up to 60 characters and .artist never wraps,
+            so without minWidth/ellipsis a long one would push out of the card. */}
+        <Link
+          href={`/artists/${series.owner.username}`}
+          className={styles.artist}
+          dir="auto"
+          title={ownerName}
+          style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}
+        >
+          {ownerName}
         </Link>
       </div>
     </div>
