@@ -3,6 +3,10 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-3) var(--space-4);
+  /* Line the wordmark and nav up with the gallery column below (the home
+     and artist pages are max-width 1400px with --space-4 padding), while
+     the bottom border still runs edge to edge. */
+  padding-inline: max(var(--space-4), calc((100% - 1400px) / 2 + var(--space-4)));
   border-bottom: 1px solid var(--border);
 }
 
