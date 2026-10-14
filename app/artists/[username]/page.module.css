@@ -4,6 +4,14 @@
   padding: var(--space-4);
 }
 
+/* Match SiteHeader's phone padding so the wordmark and the content
+   share one left edge, and give the images more of a narrow screen. */
+@media (max-width: 480px) {
+  .page {
+    padding: var(--space-4) var(--space-2);
+  }
+}
+
 .hero {
   max-width: 640px;
   margin-bottom: var(--space-5);
