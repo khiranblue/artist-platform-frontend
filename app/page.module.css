@@ -83,14 +83,15 @@
   letter-spacing: 0.08em;
   text-decoration: none;
   padding: 0 0.8rem;
-  border: 1px solid var(--border);
+  /* 3.07:1 against --bg: visible as a button outline (--border is 1.28:1). */
+  border: 1px solid #67625a;
   border-radius: var(--radius);
   color: var(--text-muted);
 }
 
 .filter:hover {
   color: var(--text-primary);
-  border-color: var(--accent-dim);
+  border-color: var(--text-muted);
 }
 
 .filterActive {
