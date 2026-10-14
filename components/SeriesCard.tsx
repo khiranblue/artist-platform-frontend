@@ -18,9 +18,12 @@ export interface SeriesSummary {
  * stays visually identical; the only addition is the image count.
  */
 export function SeriesCard({ series }: { series: SeriesSummary }) {
-  const title = series.title ?? 'Untitled';
+  // No title → no placeholder word. A grid of "Untitled" repeated on most
+  // cards is noise; the artist's name alone is the caption.
+  const title = series.title?.trim() || null;
   const href = `/series/${series.series_id}`;
   const ownerName = series.owner.display_name || series.owner.username;
+  const count = series.entry_count > 1 ? `${series.entry_count} images` : null;
   return (
     <div className={styles.card}>
       <Link href={href} className={styles.imageLink}>
@@ -28,7 +31,7 @@ export function SeriesCard({ series }: { series: SeriesSummary }) {
           {series.cover_url && series.cover_width && series.cover_height ? (
             <Image
               src={series.cover_url}
-              alt={title}
+              alt={title ?? `Work by ${ownerName}`}
               width={series.cover_width}
               height={series.cover_height}
               style={{ width: '100%', height: 'auto' }}
@@ -40,12 +43,19 @@ export function SeriesCard({ series }: { series: SeriesSummary }) {
         </div>
       </Link>
       <div className={styles.caption}>
-        <Link href={href} className={styles.title}>
-          {title}
-          {series.entry_count > 1 && (
-            <span className={styles.artist}> · {series.entry_count} images</span>
-          )}
-        </Link>
+        {title ? (
+          <Link href={href} className={styles.title}>
+            {title}
+            {count && <span className={styles.artist}> · {count}</span>}
+          </Link>
+        ) : count ? (
+          <Link href={href} className={styles.artist}>
+            {count}
+          </Link>
+        ) : (
+          // Keeps the artist's name on the right, where it sits on every other card.
+          <span aria-hidden="true" />
+        )}
         {/* A display name can be up to 60 characters and .artist never wraps,
             so without minWidth/ellipsis a long one would push out of the card. */}
         <Link
