@@ -61,7 +61,8 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   if (!series) return { title: 'Series not found' };
   const name = series.owner.display_name || series.owner.username;
   const single = series.entries.length === 1;
-  const title = `${series.title ?? (single ? 'Untitled' : 'Untitled series')} — ${name}`;
+  // No title → no placeholder word; the tab and link previews name the artist.
+  const title = series.title ? `${series.title} — ${name}` : `Work by ${name}`;
   const description = single
     ? `A work by ${name} on Atelier.`
     : `${series.entries.length} images over time by ${name} on Atelier.`;
@@ -101,25 +102,38 @@ export default async function SeriesPage({ params }: { params: { id: string } })
     <article className={styles.page}>
       <header className={styles.header}>
         <span className={styles.field}>{FIELD_LABELS[series.field] ?? series.field}</span>
-        <h1 className={styles.title}>
-          {series.title ?? (isSingle ? 'Untitled' : 'Untitled series')}
-        </h1>
-        {/* Up to 60 characters: kept to one line, cut with an ellipsis. */}
-        <Link
-          href={`/artists/${series.owner.username}`}
-          className={styles.owner}
-          dir="auto"
-          title={ownerName}
-          style={{
-            maxWidth: '100%',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            verticalAlign: 'bottom',
-          }}
-        >
-          {ownerName}
-        </Link>
+        {series.title ? (
+          <>
+            <h1 className={styles.title}>{series.title}</h1>
+            {/* Up to 60 characters: kept to one line, cut with an ellipsis. */}
+            <Link
+              href={`/artists/${series.owner.username}`}
+              className={styles.owner}
+              dir="auto"
+              title={ownerName}
+              style={{
+                maxWidth: '100%',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                verticalAlign: 'bottom',
+              }}
+            >
+              {ownerName}
+            </Link>
+          </>
+        ) : (
+          // No title: the artist's name is the heading instead of the word
+          // "Untitled", so the separate small name line below is not repeated.
+          <h1 className={styles.title} dir="auto" style={{ overflowWrap: 'anywhere' }}>
+            <Link
+              href={`/artists/${series.owner.username}`}
+              style={{ textDecoration: 'none' }}
+            >
+              {ownerName}
+            </Link>
+          </h1>
+        )}
         {first && last && (
           <p className={styles.span}>
             {isSingle
