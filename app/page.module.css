@@ -4,6 +4,14 @@
   padding: var(--space-4);
 }
 
+/* Match SiteHeader's phone padding so the wordmark and the content
+   share one left edge, and give the images more of a narrow screen. */
+@media (max-width: 480px) {
+  .page {
+    padding: var(--space-4) var(--space-2);
+  }
+}
+
 .hero {
   max-width: 640px;
   margin-bottom: var(--space-5);
@@ -16,6 +24,8 @@
   font-size: clamp(2rem, 5vw, 3.25rem);
   line-height: 1.1;
   margin: 0 0 var(--space-2);
+  /* No single word stranded on the last line. */
+  text-wrap: balance;
 }
 
 .heroSub {
@@ -64,12 +74,15 @@
 
 .filter,
 .filterActive {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px; /* comfortable to tap on a phone */
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   text-decoration: none;
-  padding: 0.3rem 0.65rem;
+  padding: 0 0.8rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   color: var(--text-muted);
