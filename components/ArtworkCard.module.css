@@ -51,7 +51,7 @@ like a gallery placard frame lighting up — not a generic scale/shadow. */
 
 .artist {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
   white-space: nowrap;
   text-decoration: none;
